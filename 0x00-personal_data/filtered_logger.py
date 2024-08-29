@@ -11,9 +11,8 @@ def filter_datum(fields: List[str],
     """log message obfuscated"""
     obfus_msg = message
     for field in fields:
-        if field:
-            pattern = r'({}=)[^{}]+'.format(field, separator)
-            obfus_msg = re.sub(pattern,
-                               r'\1{}'.format(redaction),
-                               obfus_msg)
+        pattern = r'({}=)[^{}]+'.format(field, separator)
+        obfus_msg = re.sub(pattern,
+                           r'\1{}'.format(redaction),
+                           obfus_msg)
     return obfus_msg
