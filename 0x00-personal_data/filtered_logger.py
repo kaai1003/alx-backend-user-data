@@ -3,7 +3,7 @@
 import logging
 import mysql.connector
 from mysql.connector.connection import MySQLConnection
-from os import getenv
+import os
 from typing import List
 import re
 
@@ -40,10 +40,10 @@ def get_logger() -> logging.Logger:
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """return db connector"""
 
-    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
-    pwd = getenv('PERSONAL_DATA_DB_PASSWORD', '')
-    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
-    db = getenv('PERSONAL_DATA_DB_NAME')
+    user = os.getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    pwd = os.getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    db = os.getenv('PERSONAL_DATA_DB_NAME')
 
     return mysql.connector.connect(user,
                                    pwd,
@@ -81,3 +81,25 @@ class RedactingFormatter(logging.Formatter):
                             self.REDACTION,
                             super().format(record),
                             self.SEPARATOR)
+
+
+def main():
+    """retrieve users and
+    display filtred result"""
+
+    logger = get_logger()
+    con = get_db
+    cur = con.cursor()
+    cur.execute('SELECT * FROM users;')
+
+    result = cur.fetchall()
+
+    for row in result:
+        log = "; ".join([f"{key}={value}" for key,
+                         value in row.items()])
+    cur.close()
+    con.close()
+
+
+if __name__ == "__main__":
+    main()
