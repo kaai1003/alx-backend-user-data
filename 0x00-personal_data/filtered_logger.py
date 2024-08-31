@@ -4,6 +4,8 @@ import logging
 from typing import List
 import re
 
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
+
 
 def filter_datum(fields: List[str],
                  redaction: str,
@@ -17,6 +19,18 @@ def filter_datum(fields: List[str],
                            r'\1{}'.format(redaction),
                            obfus_msg)
     return obfus_msg
+
+
+def get_logger() -> logging.Logger:
+    """create logger func"""
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+    handler = logging.StreamHandler()
+    handler.setFormatter(RedactingFormatter(PII_FIELDS))
+    logger.addHandler(handler)
+
+    return logger
 
 
 class RedactingFormatter(logging.Formatter):
