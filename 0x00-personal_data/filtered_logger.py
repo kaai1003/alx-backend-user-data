@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """filtred logger Module"""
 import logging
+import mysql.connector
+from mysql.connector.connection import MySQLConnection
+from os import getenv
 from typing import List
 import re
+
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
@@ -31,6 +35,20 @@ def get_logger() -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """return db connector"""
+
+    user = getenv('PERSONAL_DATA_DB_USERNAME', 'root')
+    pwd = getenv('PERSONAL_DATA_DB_PASSWORD', '')
+    host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
+    db = getenv('PERSONAL_DATA_DB_NAME')
+
+    return mysql.connector.connect(user,
+                                   pwd,
+                                   host,
+                                   db)
 
 
 class RedactingFormatter(logging.Formatter):
