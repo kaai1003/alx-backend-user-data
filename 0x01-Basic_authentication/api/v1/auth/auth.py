@@ -17,7 +17,7 @@ class Auth:
             if ex_path.rstrip('/') == path.rstrip('/'):
                 return False
         return True
-    
+
     def authorization_header(self, request=None) -> str:
         """auth header method"""
         if request is None:
