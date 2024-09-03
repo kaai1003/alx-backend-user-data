@@ -18,6 +18,7 @@ if AUTH_TYPE == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
 
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -45,9 +46,9 @@ def before_request():
                           '/api/v1/unauthorized/',
                           '/api/v1/forbidden/']
         if auth.require_auth(request.path, excluded_paths):
-            if auth.authorization_header(request) == None:
+            if auth.authorization_header(request) is None:
                 abort(401)
-            if auth.current_user(request) == None:
+            if auth.current_user(request) is None:
                 abort(403)
 
 
