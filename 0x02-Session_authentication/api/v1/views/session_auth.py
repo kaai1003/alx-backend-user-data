@@ -11,7 +11,7 @@ from os import getenv
 @app_views.route('/auth_session/login',
                  methods=['POST'],
                  strict_slashes=False)
-def post_login():
+def session_auth():
     """login route method"""
     email = request.form.get('email')
     if email is None or email == '':
