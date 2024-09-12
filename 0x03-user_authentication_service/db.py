@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """DB module
 """
 from sqlalchemy import create_engine
@@ -81,7 +80,14 @@ class DB:
     def update_user(self,
                     user_id: int,
                     **kwargs: Dict[str, str]) -> None:
-        """update user method"""
+        """update user method
+
+        Args:
+            user_id (int): user id
+
+        Raises:
+            ValueError: raise error value
+        """
         user = self.find_user_by(id=user_id)
         session = self.__session
         for key, value in kwargs.items():
