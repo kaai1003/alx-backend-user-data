@@ -2,8 +2,8 @@
 """password encryption module"""
 import bcrypt
 from db import DB
-from typing import TypeVar
 from sqlalchemy.exc import NoResultFound
+from user import User
 
 
 def _hash_password(password: str) -> bytes:
@@ -23,11 +23,22 @@ class Auth:
 
     def register_user(self,
                       email: str,
-                      password: str) -> TypeVar('User'):
-        """register user method"""
+                      password: str) -> User:
+        """register user method
+
+        Args:
+            email (str): user email
+            password (str): user password
+
+        Raises:
+            ValueError: raise error
+
+        Returns:
+            User: registred user object
+        """
         try:
             self._db.find_user_by(email=email)
-            raise ValueError('User {} already exists'.format(user.email))
+            raise ValueError('User {} already exists'.format(email))
         except NoResultFound:
             pass
         hashed = _hash_password(password)

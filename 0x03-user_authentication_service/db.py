@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """DB module
 """
 from sqlalchemy import create_engine
@@ -68,7 +69,7 @@ class DB:
         Returns:
             User: user object found
         """
-        session = self.__session
+        session = self._session
         try:
             found = session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
@@ -89,7 +90,7 @@ class DB:
             ValueError: raise error value
         """
         user = self.find_user_by(id=user_id)
-        session = self.__session
+        session = self._session
         for key, value in kwargs.items():
             if hasattr(User, key):
                 setattr(user, key, value)
