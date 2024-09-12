@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import InvalidRequestError, NoResultFound
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from typing import TypeVar, Dict
+from typing import Dict
 import logging
 
 from user import Base, User
@@ -38,21 +38,37 @@ class DB:
     def add_user(self,
                  email: str,
                  hashed_password: str) -> User:
-        """new user method"""
+        """add user method
+
+        Args:
+            email (str): user email
+            hashed_password (str): user password
+
+        Returns:
+            User: user object
+        """
         session = self._session
         try:
             new_user = User(email=email,
                             hashed_password=hashed_password)
             session.add(new_user)
             session.commit()
-        except Exception:
+        except Exception as e:
             session.rollback()
             raise
         return new_user
 
     def find_user_by(self,
-                     **kwargs: Dict[str, str]) -> TypeVar('User'):
-        """find user method"""
+                     **kwargs: Dict[str, str]) -> User:
+        """find user method
+
+        Raises:
+            NoResultFound: no user found
+            InvalidRequestError: invalid input args
+
+        Returns:
+            User: user object found
+        """
         session = self.__session
         try:
             found = session.query(User).filter_by(**kwargs).one()
