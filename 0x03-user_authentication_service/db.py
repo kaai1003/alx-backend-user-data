@@ -10,6 +10,7 @@ from typing import TypeVar, Dict
 import logging
 
 from user import Base, User
+
 logging.disable(logging.WARNING)
 
 
