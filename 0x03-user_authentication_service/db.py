@@ -36,7 +36,7 @@ class DB:
 
     def add_user(self,
                  email: str,
-                 hashed_password: str) -> TypeVar('User'):
+                 hashed_password: str) -> User:
         """new user method"""
         session = self._session
         try:
@@ -46,7 +46,7 @@ class DB:
             session.commit()
         except Exception:
             session.rollback()
-            return None
+            raise
         return new_user
 
     def find_user_by(self,

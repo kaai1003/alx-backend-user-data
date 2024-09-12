@@ -2,21 +2,14 @@
 """
 Main file
 """
-from auth import Auth
 
-email = 'alx@me.com'
-password = 'SecuredPwd'
+from db import DB
+from user import User
 
-auth = Auth()
+my_db = DB()
 
-try:
-    user = auth.register_user(email, password)
-    print("successfully created a new user!")
-except ValueError as err:
-    print("could not create a new user: {}".format(err))
+user_1 = my_db.add_user("alx@test.com", "NewPwd")
+print(user_1.id)
 
-try:
-    user = auth.register_user(email, password)
-    print("successfully created a new user!")
-except ValueError as err:
-    print("could not create a new user: {}".format(err))
+user_2 = my_db.add_user("alx1@test.com", "NewPwd1")
+print(user_2.id)
